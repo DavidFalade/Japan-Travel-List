@@ -66,4 +66,741 @@ const APPS=[
   {name:"Stamp Quest",icon:"🏆",have:true,note:"Gamified stamp collecting."},
   {name:"Ramen Beast",icon:"🍥",have:true,note:"Best curated ramen finder — use daily."},
   {name:"Pimsleur",icon:"🎧",have:true,note:"Japanese phrases — even a few go far."},
-  {name:"DJI Mimo",i
+  {name:"DJI Mimo",icon:"🎥",have:true,note:"Check no-fly zones near shrines/airports."},
+  {name:"Suica (Apple Wallet)",icon:"💳",have:false,note:"Load via Apple Wallet. Tap for trains, konbini."},
+  {name:"LINE",icon:"💬",have:false,note:"Japan's WhatsApp — backup if eSIM acts up."},
+  {name:"GO Taxi",icon:"🚕",have:false,note:"Ride share — useful in Okinawa & late-night."},
+];
+
+const CONFIRMED=[
+  {name:"Klook Event 1",note:"Check Klook app for details"},
+  {name:"Klook Event 2",note:"Check Klook app for details"},
+  {name:"Klook Event 3",note:"Check Klook app for details"},
+  {name:"Hozugawa River Boat Ride",note:"Kameoka → Arashiyama ~2hr. Check Klook for time."},
+  {name:"Zamami Island Ferry",note:"Tomari Port → Zamami ~50min high-speed."},
+  {name:"Okinawa Car Rental",note:"Pick up at Naha Airport. Drive LEFT."},
+  {name:"All 8 Hotels",note:"Tokyo 1, Fuji (confirm), Kyoto, Osaka, Okinawa x3, Tokyo 2"},
+];
+
+const TODO_BOOK=[
+  {item:"teamLab Biortex Kyoto",urgency:"BOOK TODAY",url:"teamlab.art",note:"May 23 — sells out weeks ahead"},
+  {item:"Kawaguchiko Bus (Shinjuku)",urgency:"BOOK TODAY",url:"highway-buses.jp",note:"Mt. Fuji day May 19"},
+  {item:"Confirm Mahoroba Camp",urgency:"CONFIRM",url:"booking.com",note:"Status TBD — verify it's locked"},
+  {item:"Kirby Cafe Petit",urgency:"CHECK NOW",url:"kirbycafe.jp",note:"Monthly window — May 16"},
+  {item:"Kibune River Dining",urgency:"BOOK AHEAD",url:"Tabelog → Hirobun or Kibuneso",note:"May 22 kawadoko dinner"},
+  {item:"Capybara Cafe Harajuku",urgency:"BOOK AHEAD",url:"Search: Harajuku Capybara Salon",note:"Limited slots — May 17"},
+  {item:"Sword Forging",urgency:"OPTIONAL",url:"Klook → katana making Tokyo",note:"Jun 1"},
+];
+
+const SHOPPING_CATS=[
+  {cat:"🛍️ Fashion",items:["Kapital (Harajuku)","Needles jacket","CDG piece (Omotesando)","GU basics","Uniqlo shirts","Custom Levi's denim (Harajuku)","Onitsuka Tigers","Mizuno Wave Rider 10 (Atmos)","Laufers","Nubian sneaker boutique","Second Street vintage (Shimokitazawa)","Seiko watch","G-Shock (Bicqlo Shinjuku)","Glasses/shades","Bracelets","Grillz"]},
+  {cat:"📚 Anime & Manga",items:["Vagabond manga (Mandarake Akihabara)","Gundam figure","JJK merch","HXH merch","Naruto merch","Jojo's merch","One Piece merch","Anime figures","Posters","Pokemon cards"]},
+  {cat:"🎵 Audio & Tech",items:["Portable CD player (BIC Camera/Yodobashi)","Film camera (BIC Camera Akihabara)","Synths/audio (Five G, Harajuku)","Vinyl records (Disk Union Shinjuku)"]},
+  {cat:"🍵 Food & Snacks",items:["Matcha (Ippodo Tea, Kyoto)","Japanese snacks (Donki/konbini)","Kit Kat assortment","Dried noodles","Royce chocolate (airport)"]},
+  {cat:"🔪 Kitchen",items:["Cooking knives (Aritsugu, Nishiki Market)","Chopsticks (Asakusa/Ninenzaka)","Coffee mug for dad"]},
+  {cat:"💄 Skincare",items:["Skincare (Matsumoto Kiyoshi)","Japanese sunscreen","Toner/sheet masks"]},
+  {cat:"🎁 Souvenirs",items:["Magnets (Donki, everywhere)","Japanese bead bracelets for dad","Shisa figurines (Okinawa)","Ryukyu glass (Okinawa)","Sake or Japanese whisky (airport)"]},
+];
+
+const DEFAULT_EVENTS={
+  tokyo:[
+    {id:"t1",name:"Shibuya Crossing",type:"sightseeing",status:"todo",note:"Go morning or evening. The classic."},
+    {id:"t2",name:"Harajuku — Takeshita Street + Omotesando",type:"shopping",status:"todo",note:"Fashion, CDG, Kapital, Needles, Levi's custom denim"},
+    {id:"t3",name:"Five G Music — synth store, Harajuku",type:"shopping",status:"todo",note:"Portable CD players, rare audio gear, synths"},
+    {id:"t4",name:"Akihabara Electric Town",type:"shopping",status:"todo",note:"Anime, figures, electronics, Gundam"},
+    {id:"t5",name:"Animate Akihabara — 10 floors",type:"shopping",status:"todo",note:"JJK, HXH, Naruto, Jojo's, One Piece"},
+    {id:"t6",name:"Tokyo Station Character Street",type:"shopping",status:"todo",note:"Pokémon, One Piece, Ghibli, Kirby, Rilakkuma and more"},
+    {id:"t7",name:"Shimokitazawa vintage shopping",type:"shopping",status:"todo",note:"Second Street + indie boutiques"},
+    {id:"t8",name:"Metropolitan Gov Building — free sky view",type:"sightseeing",status:"todo",note:"202m, completely free. Go at sunset."},
+    {id:"t9",name:"Maid Cafe",type:"experience",status:"todo",note:"@home cafe — walk-in usually fine"},
+    {id:"t10",name:"Capybara Cafe",type:"experience",status:"todo",note:"Harajuku Capybara Salon — book ahead"},
+    {id:"t11",name:"Omoide Yokocho (Memory Lane)",type:"food",status:"todo",note:"Tiny yakitori stalls under the Shinjuku tracks"},
+    {id:"t12",name:"Kichijoji Petit Mura — cat village",type:"sightseeing",status:"todo"},
+    {id:"t13",name:"Senso-ji Temple, Asakusa",type:"sightseeing",status:"todo",note:"Most iconic Tokyo temple. Nakamise shopping street."},
+    {id:"t14",name:"Golden Gai, Shinjuku",type:"food",status:"todo",note:"Dozens of tiny 6-seat bars. Pick one and stay a while."},
+    {id:"t15",name:"Disk Union Shinjuku — 7 floors vinyl",type:"shopping",status:"todo"},
+    {id:"t16",name:"Liberty Walk Tokyo — car culture",type:"experience",status:"todo"},
+    {id:"t17",name:"Daikoku PA Car Meet — Yokohama",type:"experience",status:"todo",note:"~40min from Tokyo. Check Twitter/Instagram for schedule."},
+    {id:"t18",name:"Forge a sword — katana experience",type:"experience",status:"todo",note:"Klook: search katana making Tokyo. Asakusa area."},
+    {id:"t19",name:"Kirby Cafe Petit",type:"experience",status:"todo",note:"Tokyo Station. Book at kirbycafe.jp — monthly window."},
+    {id:"t20",name:"Recoco Music Cafe",type:"food",status:"todo",note:"Confirm hours before going"},
+    {id:"t21",name:"Kissaten Seven — movie cafe",type:"food",status:"todo"},
+    {id:"t22",name:"Muscle Mommy event/cafe",type:"experience",status:"todo",note:"Confirm details"},
+    {id:"t23",name:"Rent a family / Rent a grandpa",type:"experience",status:"todo",note:"Search: Family Romance Tokyo — genuinely fascinating"},
+    {id:"t24",name:"Ameyoko Market under the tracks",type:"shopping",status:"todo",note:"Cheap clothes, cosmetics, snacks, watches"},
+    {id:"t25",name:"Renting kimonos — Asakusa",type:"experience",status:"todo",note:"~¥4,000–6,000 for 3hrs"},
+  ],
+  kamakura:[
+    {id:"k1",name:"Kotoku-in — giant outdoor Buddha",type:"sightseeing",status:"todo"},
+    {id:"k2",name:"Hasedera Temple",type:"sightseeing",status:"todo",note:"Gardens and sea views"},
+    {id:"k3",name:"Komachi-dori Street — matcha soft serve",type:"food",status:"todo"},
+    {id:"k4",name:"Tsurugaoka Hachimangu Shrine",type:"sightseeing",status:"todo"},
+    {id:"k5",name:"Enoshima Island detour",type:"activity",status:"todo",note:"20min from Kamakura. Sea cave + coastline."},
+  ],
+  fuji:[
+    {id:"f1",name:"Lawson Fujikawaguchiko — iconic Fuji photo",type:"sightseeing",status:"todo",note:"THE shot. Morning light is best."},
+    {id:"f2",name:"Lake Kawaguchiko — cycling or boat rental",type:"activity",status:"todo"},
+    {id:"f3",name:"Fuji-Q Highland — coasters with Fuji backdrop",type:"activity",status:"todo"},
+    {id:"f4",name:"Onsen — Fujiyama Onsen",type:"experience",status:"todo",note:"Snow-capped Fuji view if clear"},
+  ],
+  kyoto:[
+    {id:"ky1",name:"Fushimi Inari Shrine",type:"sightseeing",status:"todo",note:"Go 6–7am. Thousands of torii gates. Hike to the top."},
+    {id:"ky2",name:"Kiyomizudera Temple",type:"sightseeing",status:"todo",note:"Wooden stage over the hillside"},
+    {id:"ky3",name:"Ninenzaka & Sannenzaka at night",type:"sightseeing",status:"todo",note:"⭐ Stone streets lit up. No crowds. Go your first night."},
+    {id:"ky4",name:"Nishiki Market — Kyoto's Kitchen",type:"food",status:"todo",note:"Aritsugu knives here. Sample everything."},
+    {id:"ky5",name:"Toji Temple Flea Market (21st!)",type:"shopping",status:"todo",note:"You're here on May 21st — perfect. Antiques, crafts, street food."},
+    {id:"ky6",name:"Arashiyama Bamboo Grove",type:"sightseeing",status:"todo",note:"Go at dawn. 20min from Arashiyama station."},
+    {id:"ky7",name:"Hozugawa River Boat Ride",type:"activity",status:"booked",note:"✅ Klook booked. Kameoka → Arashiyama ~2hrs."},
+    {id:"ky8",name:"Kinkaku-ji (Golden Pavilion)",type:"sightseeing",status:"todo"},
+    {id:"ky9",name:"Kibune — kawadoko river dining",type:"food",status:"todo",note:"Platforms over the river. Book ahead at Hirobun/Kibuneso."},
+    {id:"ky10",name:"teamLab Biortex Kyoto",type:"experience",status:"todo",note:"⚠️ Book NOW at teamlab.art — sells out weeks ahead"},
+    {id:"ky11",name:"Renting kimonos — Gion area",type:"experience",status:"todo",note:"~¥4,000–6,000, includes dressing"},
+    {id:"ky12",name:"Philosopher's Path",type:"sightseeing",status:"todo",note:"Peaceful canal walk"},
+    {id:"ky13",name:"Gion district walk — spot maiko/geiko",type:"sightseeing",status:"todo"},
+    {id:"ky14",name:"Tenryuji Temple garden",type:"sightseeing",status:"todo"},
+  ],
+  osaka:[
+    {id:"o1",name:"Dotonbori — neon canal, eat everything",type:"food",status:"todo",note:"Takoyaki, okonomiyaki, kushikatsu"},
+    {id:"o2",name:"Kuromon Ichiba Market",type:"food",status:"todo",note:"Wagyu skewers, fresh seafood"},
+    {id:"o3",name:"Umeda Sky Building — sunset views",type:"sightseeing",status:"todo",note:"¥1,500. Two towers connected at top. Go at sunset."},
+    {id:"o4",name:"Den-Den Town — Osaka's Akihabara",type:"shopping",status:"todo",note:"Anime, electronics, cool shops"},
+    {id:"o5",name:"Amerika-Mura — streetwear, vintage",type:"shopping",status:"todo"},
+    {id:"o6",name:"Orange Street — thrift & streetwear",type:"shopping",status:"todo"},
+    {id:"o7",name:"Osaka Castle grounds",type:"sightseeing",status:"todo",note:"Beautiful at night"},
+    {id:"o8",name:"MR Hiro Car Studio — car cafe",type:"experience",status:"todo",note:"Confirm hours before going"},
+    {id:"o9",name:"Hitotsuzuki — good Osaka food",type:"food",status:"todo"},
+    {id:"o10",name:"Koyasan day trip — monk graveyard",type:"activity",status:"todo",note:"1.5hr from Osaka. Oku-no-in through cedar forest at night is surreal."},
+  ],
+  nara:[
+    {id:"n1",name:"Nara Deer Park — free-roaming deer",type:"sightseeing",status:"todo",note:"Buy shika senbei. They bow for food."},
+    {id:"n2",name:"Todai-ji Temple",type:"sightseeing",status:"todo",note:"World's largest wooden building"},
+    {id:"n3",name:"Kasuga Taisha Shrine — stone lanterns",type:"sightseeing",status:"todo"},
+    {id:"n4",name:"Naramachi — craft shops",type:"shopping",status:"todo"},
+    {id:"n5",name:"Soni Highland — countryside day extension",type:"activity",status:"todo",note:"⭐ East of Nara ~1hr. Stunning plateau. Best countryside option."},
+  ],
+  okinawa:[
+    {id:"ok1",name:"Zamami Island — Furuzamami Beach",type:"activity",status:"booked",note:"✅ Ferry booked. Crystal water, sea turtles, coral reef."},
+    {id:"ok2",name:"Shurijo Castle (UNESCO)",type:"sightseeing",status:"todo",note:"Ryukyu Kingdom palace in Naha"},
+    {id:"ok3",name:"Churaumi Aquarium",type:"activity",status:"todo",note:"One of the world's largest tanks. Whale sharks."},
+    {id:"ok4",name:"Cape Maeda — Blue Cave snorkeling",type:"activity",status:"todo",note:"Tours ~¥3,000. Unreal visibility."},
+    {id:"ok5",name:"Nakijin Castle ruins",type:"sightseeing",status:"todo",note:"UNESCO. Ocean views."},
+    {id:"ok6",name:"Kokusai-dori — International Street",type:"shopping",status:"todo",note:"Main shopping street in Naha"},
+    {id:"ok7",name:"Cape Hedo — northernmost point",type:"sightseeing",status:"todo"},
+    {id:"ok8",name:"Kouri Island — drive over the bridge",type:"activity",status:"todo",note:"Impossibly blue water on both sides of the bridge"},
+  ],
+};
+
+const CITY_LABELS={
+  tokyo:{label:"Tokyo",emoji:"🗼",color:"#6B8FA3"},
+  kamakura:{label:"Kamakura",emoji:"⛩️",color:"#8B7355"},
+  fuji:{label:"Mt. Fuji",emoji:"🗻",color:"#5B7FA6"},
+  kyoto:{label:"Kyoto",emoji:"🦊",color:"#9B4A4A"},
+  osaka:{label:"Osaka",emoji:"🏙️",color:"#B56B30"},
+  nara:{label:"Nara",emoji:"🦌",color:"#6B8B5E"},
+  okinawa:{label:"Okinawa",emoji:"🏖️",color:"#2E86AB"},
+};
+
+const EVENT_TYPES=["sightseeing","shopping","food","experience","activity"];
+const TYPE_ICONS={sightseeing:"📍",shopping:"🛍️",food:"🍜",experience:"✨",activity:"⚡",transit:"🚄",logistics:"📋",confirmed:"✅"};
+const STATUS_STYLES={
+  todo:{bg:"#f0f0f0",color:"#555",label:"Want to do"},
+  booked:{bg:"#e8f5e9",color:"#2e7d32",label:"✅ Booked"},
+  done:{bg:"#e3f2fd",color:"#1565c0",label:"✔ Done"},
+  skip:{bg:"#fafafa",color:"#bbb",label:"Skipping"},
+};
+
+const DAYS=[
+  {date:"Wed May 14",loc:"Tokyo",emoji:"✈️",tag:"Arrival",tagColor:"#6B8FA3",stay:"Tokyo 1 — Aoto (✅ $575 group)",
+   acts:[{n:"Land Narita ~4pm → Narita Express",t:"transit",note:"Buy Suica at airport or load via Apple Wallet"},
+         {n:"Check in to Tokyo 1",t:"logistics"},
+         {n:"7-Eleven / Lawson run — onigiri, egg sando, matcha",t:"food",note:"This is part of the experience"},
+         {n:"Find a nearby ramen spot",t:"food"}],
+   shop:[],book:[],tips:["Activate Airalo eSIM on the plane","Stay up until 9pm local to beat jet lag"]},
+  {date:"Thu May 15",loc:"Tokyo — Harajuku / Shibuya",emoji:"🛍️",tag:"Fashion Day",tagColor:"#7B6FA3",stay:"Tokyo 1",
+   acts:[{n:"Shibuya Crossing",t:"sightseeing"},{n:"Harajuku — Takeshita + Omotesando",t:"shopping",note:"Levi's custom denim, Onitsuka Tigers"},
+         {n:"Five G Music — synth/audio store",t:"shopping",note:"Portable CD players, rare audio gear"},
+         {n:"CDG flagship — Omotesando",t:"shopping"},{n:"Kapital + Needles — Harajuku",t:"shopping"},
+         {n:"GU + Uniqlo",t:"shopping"},{n:"Nubian sneaker boutique",t:"shopping"},
+         {n:"Banten Ebisu coffee",t:"food"},{n:"Shibuya dinner",t:"food"}],
+   shop:["Custom Levi's denim","Onitsuka Tigers","Needles jacket","CDG piece","GU/Uniqlo shirts","Audio gear"],
+   book:[],tips:["Mizuno Wave Rider 10 → Atmos or United Arrows","Duty-free: show passport at dept stores for ~10% back"]},
+  {date:"Fri May 16",loc:"Tokyo — Akihabara + Character Street",emoji:"🎌",tag:"Anime Day",tagColor:RED,stay:"Tokyo 1",
+   acts:[{n:"Tokyo Station Character Street — open 10am",t:"shopping",note:"All character shops in one go"},
+         {n:"Akihabara Electric Town",t:"shopping",note:"Anime, figures, Gundam, film cameras"},
+         {n:"Animate Akihabara — 10 floors",t:"shopping",note:"JJK, HXH, Naruto, Jojo's, One Piece"},
+         {n:"BIC Camera / Yodobashi — film camera + audio",t:"shopping"},
+         {n:"Mandarake — Vagabond manga",t:"shopping",note:"8 floors of used manga"},
+         {n:"Kirby Cafe Petit — if booked",t:"experience",note:"kirbycafe.jp"},
+         {n:"Don Quijote (Donki) at night",t:"shopping",note:"Snacks, skincare, magnets — open very late"}],
+   shop:["Vagabond manga","Gundam figure","JJK/HXH/Naruto/Jojo's merch","Film camera","Pokemon cards","Posters"],
+   char:["Pokémon Store","Miffy Style","Chiikawa Land","Mofusand","Hello Kitty","Sanrio Gift Gate","One Piece","Snoopy Town Mini","LEGO Store","Kirby Cafe Petit ⚠️","Star Wars","Ghibli Donguri","Tomica Shop","Rilakkuma Store","JUMP SHOP"],
+   book:["Kirby Cafe Petit — kirbycafe.jp"],
+   tips:["JUMP SHOP has exclusive drops","Mandarake — budget 2+ hours"]},
+  {date:"Sat May 17",loc:"Tokyo — Shimokitazawa / Shinjuku",emoji:"🐱",tag:"Vibe Day",tagColor:"#4A7C6B",stay:"Tokyo 1",
+   acts:[{n:"Shimokitazawa — Second Street, indie boutiques",t:"shopping"},
+         {n:"Kichijoji Petit Mura — cat village",t:"sightseeing"},
+         {n:"Inokashira Park — lake, rowboats",t:"sightseeing"},
+         {n:"Metropolitan Gov Building — FREE sky view",t:"sightseeing",note:"202m, completely free. Go at sunset."},
+         {n:"Maid Cafe",t:"experience",note:"@home cafe, walk-in fine"},
+         {n:"Capybara Cafe — book ahead",t:"experience"},
+         {n:"Omoide Yokocho — yakitori dinner",t:"food",note:"Tiny stalls under the Shinjuku tracks"}],
+   shop:["Second Street vintage"],book:["Capybara Cafe — Harajuku Capybara Salon"],
+   tips:["Recoco Music Cafe — check hours","Stay out late in Shinjuku"]},
+  {date:"Sun May 18",loc:"Kamakura Day Trip",emoji:"⛩️",tag:"Kamakura",tagColor:"#8B7355",stay:"Tokyo 1",
+   acts:[{n:"Train to Kamakura — ~1hr (Yokosuka Line)",t:"transit"},
+         {n:"Kotoku-in — giant Buddha",t:"sightseeing"},
+         {n:"Hasedera Temple — sea views",t:"sightseeing"},
+         {n:"Komachi-dori — matcha soft serve",t:"food"},
+         {n:"Tsurugaoka Hachimangu Shrine",t:"sightseeing"},
+         {n:"Enoshima Island detour (optional)",t:"activity",note:"20min from Kamakura"},
+         {n:"Daikoku PA Car Meet check — Yokohama",t:"experience",note:"~40min. Check Twitter/IG for meet schedule."}],
+   shop:["Matcha products","Chopsticks"],book:[],
+   tips:["Enoshima + Kamakura same day is very doable"]},
+  {date:"Mon May 19",loc:"Mount Fuji — Kawaguchiko",emoji:"🗻",tag:"Mt. Fuji",tagColor:"#5B7FA6",stay:"Mahoroba Camp (📌 Confirm)",
+   acts:[{n:"Keio bus from Shinjuku Busta — ~2hrs",t:"transit",note:"Book at highway-buses.jp"},
+         {n:"Lawson Fujikawaguchiko — THE Fuji photo",t:"sightseeing",note:"Morning light is best"},
+         {n:"Lake Kawaguchiko — cycling or boat",t:"activity"},
+         {n:"Fuji-Q Highland (optional)",t:"activity"},
+         {n:"Onsen — Fujiyama Onsen",t:"experience"}],
+   shop:[],book:["Book Kawaguchiko bus NOW — highway-buses.jp","Confirm Mahoroba Camp"],
+   tips:["May = snow-capped Fuji + green surroundings — ideal timing"]},
+  {date:"Tue May 20",loc:"Fuji → Kyoto",emoji:"🚄",tag:"Travel Day",tagColor:"#9B6B4A",stay:"Daitokuji Inn, Kyoto (✅ $611.80 group)",
+   acts:[{n:"Sunrise Fuji from the lake",t:"sightseeing"},
+         {n:"Train to Mishima → Shinkansen to Kyoto",t:"transit",note:"Use smartEX. JR Pass covers it. ~3hrs total."},
+         {n:"Ninenzaka & Sannenzaka at night ⭐",t:"sightseeing",note:"Stone streets lit up, no crowds. Best first night in Kyoto."},
+         {n:"Gion district walk",t:"sightseeing"},{n:"Dinner near Gion",t:"food"}],
+   shop:[],book:[],tips:["Ninenzaka at night — do not skip this"]},
+  {date:"Wed May 21",loc:"Kyoto Day 1 — Shrines + Toji",emoji:"🦊",tag:"Kyoto",tagColor:"#9B4A4A",stay:"Daitokuji Inn",
+   acts:[{n:"Fushimi Inari — 6–7am ⭐",t:"sightseeing",note:"Thousands of torii gates. Hike to the top."},
+         {n:"Kiyomizudera Temple",t:"sightseeing",note:"Wooden stage, city views"},
+         {n:"Nishiki Market",t:"food",note:"Aritsugu knives here — name engraving"},
+         {n:"Toji Temple Flea Market — 21st! ⭐",t:"shopping",note:"Perfect timing — antiques, crafts, street food"},
+         {n:"Gion dinner",t:"food"}],
+   shop:["Cooking knives (Aritsugu)","Matcha (Ippodo Tea)","Chopsticks","Bead bracelets for dad"],
+   book:[],tips:["Toji Flea Market is one of Japan's best — budget 2hrs"]},
+  {date:"Thu May 22",loc:"Kyoto Day 2 — Hozugawa + Arashiyama",emoji:"🛶",tag:"Kyoto",tagColor:"#9B4A4A",stay:"Daitokuji Inn",
+   acts:[{n:"Hozugawa River Boat Ride ✅ (Klook)",t:"confirmed",note:"Kameoka → Arashiyama ~2hrs. Check Klook for exact time."},
+         {n:"Arashiyama Bamboo Grove — right off the boat",t:"sightseeing",note:"Go straight from the boat landing — still early."},
+         {n:"Tenryuji Temple garden",t:"sightseeing"},
+         {n:"Kinkaku-ji (Golden Pavilion)",t:"sightseeing"},
+         {n:"Kibune — kawadoko river dining ⭐",t:"food",note:"Platforms over the river. Book ahead."}],
+   shop:[],book:["Kibune kawadoko — Tabelog: Hirobun or Kibuneso"],
+   tips:["Hozugawa → Arashiyama is probably your best single day of the trip"]},
+  {date:"Fri May 23",loc:"Kyoto Day 3 — teamLab",emoji:"💡",tag:"Kyoto",tagColor:"#9B4A4A",stay:"Daitokuji Inn",
+   acts:[{n:"teamLab Biortex Kyoto",t:"experience",note:"⚠️ Book at teamlab.art if not in Klook"},
+         {n:"Philosopher's Path",t:"sightseeing"},
+         {n:"Kimono rental — Gion",t:"experience",note:"~¥4,000–6,000"},
+         {n:"Skincare shopping — Matsumoto Kiyoshi",t:"shopping"},
+         {n:"Final Kyoto dinner",t:"food"}],
+   shop:["Skincare","Pottery/ceramics"],
+   book:["teamLab Biortex — teamlab.art TODAY"],
+   tips:["Stock up on Nishiki matcha snacks before leaving tomorrow"]},
+  {date:"Sat May 24",loc:"Kyoto → Osaka",emoji:"🏙️",tag:"Osaka",tagColor:"#B56B30",stay:"Bijou Suites, Osaka (✅ $271.10 group)",
+   acts:[{n:"15min Shinkansen or 30min Hankyu to Osaka",t:"transit"},
+         {n:"Dotonbori — eat absolutely everything",t:"food",note:"Takoyaki, okonomiyaki, kushikatsu"},
+         {n:"Kuromon Ichiba Market",t:"food"},{n:"Den-Den Town",t:"shopping"},
+         {n:"Shinsaibashi arcade",t:"shopping"},{n:"Don Quijote Dotonbori",t:"shopping"}],
+   shop:["Snacks","Magnets"],book:[],
+   tips:["Glico Running Man sign photo — required","Osaka food > everywhere else in Japan"]},
+  {date:"Sun May 25",loc:"Nara + Countryside",emoji:"🦌",tag:"Nara",tagColor:"#6B8B5E",stay:"Bijou Suites, Osaka",
+   acts:[{n:"Kintetsu Line to Nara — 45min",t:"transit"},
+         {n:"Nara Deer Park — bowing deer",t:"sightseeing",note:"Buy shika senbei"},
+         {n:"Todai-ji Temple",t:"sightseeing"},{n:"Kasuga Taisha Shrine",t:"sightseeing"},
+         {n:"Naramachi — craft shops",t:"shopping"},
+         {n:"Soni Highland detour (optional) ⭐",t:"activity",note:"East of Nara ~1hr. Top countryside option."},
+         {n:"Osaka Castle at night",t:"sightseeing"}],
+   shop:["Chopsticks in Naramachi"],book:[],
+   tips:["Soni Highland is the countryside day trip. Add it onto Nara."]},
+  {date:"Mon May 26",loc:"Osaka Day 2 — Cars + Views",emoji:"🚗",tag:"Osaka",tagColor:"#B56B30",stay:"Bijou Suites, Osaka",
+   acts:[{n:"Umeda Sky Building at sunset ⭐",t:"sightseeing",note:"¥1,500. Two towers connected at the top."},
+         {n:"MR Hiro Car Studio",t:"experience",note:"Confirm hours before going"},
+         {n:"Orange Street + Amerika-Mura",t:"shopping"},{n:"Hitotsuzuki — dinner",t:"food"},
+         {n:"Koyasan day trip (optional)",t:"activity",note:"1.5hr south. Oku-no-in graveyard through cedar forest."}],
+   shop:[],book:[],tips:["Amerika-Mura good for vintage if Shimokitazawa missed you"]},
+  {date:"Tue May 27",loc:"Osaka → Okinawa North",emoji:"🏖️",tag:"Okinawa Day 1",tagColor:"#2E86AB",stay:"North Resort (✅ $215.44 group)",
+   acts:[{n:"Fly Osaka → Naha ~2hrs ✅",t:"transit"},{n:"Pick up rental car at Naha Airport ✅",t:"logistics",note:"Drive on the LEFT"},
+         {n:"Drive north — Churaumi Aquarium, Nakijin Castle",t:"activity"},
+         {n:"Cape Hedo — northernmost point",t:"sightseeing"},{n:"Okinawan food — goya champuru, Orion beer",t:"food"}],
+   shop:["Ryukyu glass","Shisa figurines","Okinawa snacks"],book:[],
+   tips:["Okinawa has totally different culture from mainland Japan","Churaumi Aquarium has whale sharks"]},
+  {date:"Wed May 28",loc:"Zamami Island ✅",emoji:"🐠",tag:"Okinawa Day 2",tagColor:"#1A7A9A",stay:"Zamami Island (✅ $282.34 group)",
+   acts:[{n:"Ferry Tomari Port → Zamami ✅",t:"confirmed",note:"~50min high-speed. Check booking for departure time."},
+         {n:"Furuzamami Beach ⭐",t:"activity",note:"One of Japan's clearest waters. Sea turtles snorkeling."},
+         {n:"Zamami Village — tiny and beautiful",t:"sightseeing"},
+         {n:"Snorkeling / kayaking",t:"activity"},{n:"Fresh seafood lunch",t:"food"},
+         {n:"Ferry back evening",t:"transit"}],
+   shop:[],book:[],tips:["Bring underwater camera — sea turtles right off the beach"]},
+  {date:"Thu May 29",loc:"Okinawa — Castles + South",emoji:"🌅",tag:"Okinawa Day 3",tagColor:"#2E86AB",stay:"South near airport (✅ $140.61 group)",
+   acts:[{n:"Shurijo Castle — Ryukyu Kingdom (UNESCO)",t:"sightseeing"},
+         {n:"Cape Maeda — Blue Cave snorkeling",t:"activity",note:"Tours ~¥3,000"},
+         {n:"Kokusai-dori final shopping",t:"shopping"},{n:"Return rental car",t:"logistics",note:"Add 45min buffer"}],
+   shop:["Last Okinawa souvenirs"],book:[],tips:["Leave real time for car return"]},
+  {date:"Fri May 30",loc:"Okinawa → Tokyo 2",emoji:"🗼",tag:"Tokyo Return",tagColor:"#6B8FA3",stay:"Tokyo 2 — Ikebukuro (✅ $622.17 group)",
+   acts:[{n:"Fly Naha → Tokyo ✅",t:"transit"},
+         {n:"Animate Ikebukuro — 9 floors, best in Japan",t:"shopping",note:"Better than Akihabara. If you missed anything, it's here."},
+         {n:"Liberty Walk Tokyo",t:"experience"},{n:"Golden Gai, Shinjuku ⭐",t:"food",note:"Pick a tiny bar and stay a while"}],
+   shop:[],book:[],tips:["Animate Ikebukuro flagship — the best one"]},
+  {date:"Sat May 31",loc:"Tokyo — Asakusa + Shopping",emoji:"🏮",tag:"Tokyo",tagColor:"#6B8FA3",stay:"Tokyo 2 — Ikebukuro",
+   acts:[{n:"Senso-ji Temple — Asakusa",t:"sightseeing",note:"Nakamise: chopsticks, fans, snacks, dad's mug"},
+         {n:"Ameyoko Market under the tracks",t:"shopping"},{n:"Seiko or G-Shock — Bicqlo Shinjuku",t:"shopping"},
+         {n:"Grillz — Harajuku/Shibuya custom jeweler",t:"shopping"},{n:"Disk Union Shinjuku — 7 floors vinyl",t:"shopping"}],
+   shop:["Seiko/G-Shock","Bracelets","Coffee mug for dad","Vinyl"],book:[],
+   tips:["Asakusa Nakamise: best place for chopsticks and dad's gifts"]},
+  {date:"Sun Jun 1",loc:"Tokyo — Experiences",emoji:"⚔️",tag:"Tokyo",tagColor:"#6B8FA3",stay:"Tokyo 2 — Ikebukuro",
+   acts:[{n:"Forge a sword — katana experience",t:"experience",note:"Klook: katana making Tokyo"},
+         {n:"Renting kimonos — Asakusa",t:"experience"},{n:"teamLab Planets — Toyosu",t:"experience",note:"Different from Biortex"},
+         {n:"Rent a family / Rent a grandpa",t:"experience",note:"Family Romance Tokyo"},
+         {n:"Harajuku/Shibuya final sweep",t:"shopping"}],
+   shop:["Anything missed"],book:["Sword forging — Klook: katana making Tokyo"],
+   tips:["teamLab Planets water rooms are wild"]},
+  {date:"Mon Jun 2",loc:"Tokyo — Final Day",emoji:"🎵",tag:"Tokyo",tagColor:"#6B8FA3",stay:"Tokyo 2 — Ikebukuro",
+   acts:[{n:"Daikoku PA car meet — Yokohama",t:"experience",note:"Check Twitter/IG for Monday meets"},
+         {n:"Final shopping",t:"shopping"},
+         {n:"Yamato Transport bags to Narita",t:"logistics",note:"¥2–3k/bag. Book tonight, arrives airport by morning."},
+         {n:"Sento (public bath) — final night",t:"experience",note:"¥500–800"}],
+   shop:["Kit Kat assortment","Last skincare"],book:[],
+   tips:["Takkyubin to Narita: book tonight, bags waiting at airport"]},
+  {date:"Tue Jun 3",loc:"Depart Narita 5:30pm",emoji:"🛫",tag:"Departure",tagColor:"#888",stay:"",
+   acts:[{n:"Leave hotel by noon — N'EX takes 80min",t:"transit"},
+         {n:"Duty-free — Kit Kats, Royce chocolate, sake",t:"shopping"},
+         {n:"Final ramen inside Narita",t:"food"},{n:"Depart 5:30pm 🛫",t:"logistics"}],
+   shop:["Kit Kat gift packs","Royce chocolate","Sake/whisky"],book:[],tips:["Narita Terminal 2 has solid ramen inside security"]},
+];
+
+function CheckItem({text,prefix="misc"}){
+  const key=`${CHECKS_KEY}:${prefix}:${text}`;
+  const [c,setC]=useState(()=>ls.get(key,false));
+  const toggle=()=>{const n=!c;setC(n);ls.set(key,n);};
+  return(
+    <div onClick={toggle} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 0",borderBottom:"1px solid #f5f5f5",cursor:"pointer",opacity:c?0.38:1,transition:"opacity 0.2s"}}>
+      <div style={{width:20,height:20,borderRadius:4,border:`2px solid ${c?RED:"#ccc"}`,background:c?RED:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
+        {c&&<span style={{color:"#fff",fontSize:13,lineHeight:1}}>✓</span>}
+      </div>
+      <span style={{fontSize:13,textDecoration:c?"line-through":"none",color:"#333"}}>{text}</span>
+    </div>
+  );
+}
+
+function EventsTab(){
+  const EV_KEY="jp_events_v2";
+  const [events,setEvents]=useState(()=>ls.get(EV_KEY,DEFAULT_EVENTS));
+  const [activeCity,setActiveCity]=useState("tokyo");
+  const [showAdd,setShowAdd]=useState(false);
+  const [form,setForm]=useState({name:"",type:"sightseeing",status:"todo",note:""});
+  const [editId,setEditId]=useState(null);
+
+  const save=ev=>{setEvents(ev);ls.set(EV_KEY,ev);};
+
+  const addEvent=()=>{
+    if(!form.name.trim())return;
+    const cityEvs=events[activeCity]||[];
+    if(editId){
+      save({...events,[activeCity]:cityEvs.map(e=>e.id===editId?{...e,...form}:e)});
+      setEditId(null);
+    } else {
+      const id=activeCity[0]+Date.now();
+      save({...events,[activeCity]:[...cityEvs,{id,...form}]});
+    }
+    setForm({name:"",type:"sightseeing",status:"todo",note:""});
+    setShowAdd(false);
+  };
+
+  const deleteEvent=(city,id)=>save({...events,[city]:(events[city]||[]).filter(e=>e.id!==id)});
+
+  const cycleStatus=(city,id)=>{
+    const order=["todo","booked","done","skip"];
+    save({...events,[city]:(events[city]||[]).map(e=>{
+      if(e.id!==id)return e;
+      const next=order[(order.indexOf(e.status)+1)%order.length];
+      return{...e,status:next};
+    })});
+  };
+
+  const startEdit=(e)=>{
+    setForm({name:e.name,type:e.type,status:e.status,note:e.note||""});
+    setEditId(e.id);setShowAdd(true);
+  };
+
+  const cityData=CITY_LABELS[activeCity];
+  const cityEvents=events[activeCity]||[];
+  const counts=Object.fromEntries(Object.entries(events).map(([k,v])=>[k,{total:v.length,booked:v.filter(e=>e.status==="booked").length,done:v.filter(e=>e.status==="done").length}]));
+
+  return(
+    <div>
+      <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4,marginBottom:10}}>
+        {Object.entries(CITY_LABELS).map(([k,v])=>(
+          <button key={k} onClick={()=>{setActiveCity(k);setShowAdd(false);}} className="ns" style={{flexShrink:0,padding:"7px 12px",borderRadius:20,border:"none",cursor:"pointer",background:activeCity===k?v.color:"#fff",color:activeCity===k?"#fff":INK,fontSize:12,fontWeight:600,boxShadow:"0 1px 4px rgba(0,0,0,.08)",transition:"all 0.2s"}}>
+            {v.emoji} {v.label}
+            <span style={{fontSize:10,opacity:0.8,marginLeft:5}}>{counts[k]?.total||0}</span>
+          </button>
+        ))}
+      </div>
+
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+        <div>
+          <div style={{fontWeight:700,fontSize:16}}>{cityData.emoji} {cityData.label}</div>
+          <div style={{fontSize:11,color:MUTED}}>
+            {cityEvents.length} events ·{" "}
+            <span style={{color:"#2e7d32"}}>{counts[activeCity]?.booked||0} booked</span> ·{" "}
+            <span style={{color:"#1565c0"}}>{counts[activeCity]?.done||0} done</span>
+          </div>
+        </div>
+        <button onClick={()=>{setShowAdd(!showAdd);setEditId(null);setForm({name:"",type:"sightseeing",status:"todo",note:""}); }} style={{background:RED,color:"#fff",border:"none",borderRadius:20,padding:"7px 14px",fontSize:13,cursor:"pointer",fontWeight:600}}>
+          {showAdd?"Cancel":"+ Add"}
+        </button>
+      </div>
+
+      {showAdd&&(
+        <div style={{background:"#fff",borderRadius:12,padding:14,marginBottom:12,boxShadow:"0 2px 12px rgba(0,0,0,.1)",border:`1.5px solid ${RED}30`}}>
+          <div style={{fontWeight:700,fontSize:14,marginBottom:12,color:RED}}>{editId?"Edit Event":"New Event — "+cityData.label}</div>
+          <div style={{marginBottom:8}}>
+            <div style={{fontSize:11,color:MUTED,marginBottom:4}}>Event / Activity Name</div>
+            <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="e.g. Robot Restaurant, teamLab..."
+              style={{width:"100%",padding:"9px 11px",border:"1.5px solid #ddd",borderRadius:8,fontSize:14,background:"#fff"}}/>
+          </div>
+          <div style={{display:"flex",gap:8,marginBottom:8}}>
+            <div style={{flex:1}}>
+              <div style={{fontSize:11,color:MUTED,marginBottom:4}}>Type</div>
+              <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}
+                style={{width:"100%",padding:"9px 11px",border:"1.5px solid #ddd",borderRadius:8,fontSize:14,background:"#fff"}}>
+                {EVENT_TYPES.map(t=><option key={t} value={t}>{TYPE_ICONS[t]} {t}</option>)}
+              </select>
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:11,color:MUTED,marginBottom:4}}>Status</div>
+              <select value={form.status} onChange={e=>setForm({...form,status:e.target.value})}
+                style={{width:"100%",padding:"9px 11px",border:"1.5px solid #ddd",borderRadius:8,fontSize:14,background:"#fff"}}>
+                {Object.entries(STATUS_STYLES).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+              </select>
+            </div>
+          </div>
+          <div style={{marginBottom:12}}>
+            <div style={{fontSize:11,color:MUTED,marginBottom:4}}>Notes (optional)</div>
+            <textarea value={form.note} onChange={e=>setForm({...form,note:e.target.value})} placeholder="address, booking link, tips..."
+              rows={2} style={{width:"100%",padding:"9px 11px",border:"1.5px solid #ddd",borderRadius:8,fontSize:13,background:"#fff",resize:"none"}}/>
+          </div>
+          <button onClick={addEvent} style={{width:"100%",background:RED,color:"#fff",border:"none",borderRadius:8,padding:"11px",fontSize:14,cursor:"pointer",fontFamily:"Georgia,serif",fontWeight:600}}>
+            {editId?"Save Changes":"Add to "+cityData.label}
+          </button>
+        </div>
+      )}
+
+      <div style={{display:"flex",gap:5,marginBottom:10,overflowX:"auto",paddingBottom:2}}>
+        {Object.entries(STATUS_STYLES).map(([k,v])=>{
+          const count=cityEvents.filter(e=>e.status===k).length;
+          if(count===0)return null;
+          return(
+            <div key={k} style={{flexShrink:0,padding:"4px 10px",borderRadius:12,background:v.bg,color:v.color,fontSize:11,fontWeight:600}}>
+              {v.label} ({count})
+            </div>
+          );
+        })}
+      </div>
+
+      {cityEvents.length===0&&(
+        <div style={{textAlign:"center",padding:"40px 20px",color:MUTED}}>
+          <div style={{fontSize:32,marginBottom:8}}>✨</div>
+          <div style={{fontSize:14}}>No events yet for {cityData.label}</div>
+          <div style={{fontSize:12,marginTop:4}}>Tap + Add to add your first one</div>
+        </div>
+      )}
+
+      <div style={{display:"flex",flexDirection:"column",gap:7}}>
+        {cityEvents.map(ev=>{
+          const ss=STATUS_STYLES[ev.status]||STATUS_STYLES.todo;
+          return(
+            <div key={ev.id} style={{background:"#fff",borderRadius:12,padding:"12px 13px",boxShadow:"0 1px 6px rgba(0,0,0,.06)",borderLeft:`3px solid ${CITY_LABELS[activeCity].color}`,opacity:ev.status==="skip"?0.45:1}}>
+              <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
+                <span style={{fontSize:16,flexShrink:0,marginTop:1}}>{TYPE_ICONS[ev.type]||"📍"}</span>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:13,fontWeight:700,marginBottom:ev.note?3:0}}>{ev.name}</div>
+                  {ev.note&&<div style={{fontSize:11.5,color:"#666",fontStyle:"italic"}}>{ev.note}</div>}
+                </div>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:5,flexShrink:0,marginLeft:6}}>
+                  <button onClick={()=>cycleStatus(activeCity,ev.id)} style={{padding:"3px 8px",borderRadius:10,border:"none",cursor:"pointer",background:ss.bg,color:ss.color,fontSize:10,fontWeight:700,fontFamily:"monospace",whiteSpace:"nowrap"}}>
+                    {ss.label}
+                  </button>
+                  <div style={{display:"flex",gap:6}}>
+                    <button onClick={()=>startEdit(ev)} style={{background:"none",border:"none",color:"#aaa",cursor:"pointer",fontSize:14,padding:0}}>✏️</button>
+                    <button onClick={()=>deleteEvent(activeCity,ev.id)} style={{background:"none",border:"none",color:"#ddd",cursor:"pointer",fontSize:16,padding:0,lineHeight:1}}>×</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{background:"#f9f9f9",borderRadius:10,padding:"10px 13px",marginTop:12}}>
+        <div style={{fontSize:10,color:MUTED,fontFamily:"monospace",letterSpacing:1,marginBottom:6}}>TAP STATUS TO CYCLE</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+          {Object.entries(STATUS_STYLES).map(([k,v])=>(
+            <div key={k} style={{padding:"3px 9px",borderRadius:10,background:v.bg,color:v.color,fontSize:11,fontWeight:600}}>{v.label}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Budget(){
+  const EXP_KEY="jp_exp_v2";
+  const [exps,setExps]=useState(()=>ls.get(EXP_KEY,[]));
+  const [form,setForm]=useState({amt:"",cat:"food",note:""});
+  const [add,setAdd]=useState(false);
+  const save=e=>{setExps(e);ls.set(EXP_KEY,e);};
+  const submit=()=>{const v=parseFloat(form.amt);if(!v||isNaN(v))return;save([...exps,{id:Date.now(),amt:v,cat:form.cat,note:form.note,d:new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"})}]);setForm({amt:"",cat:"food",note:""});setAdd(false);};
+  const del=id=>save(exps.filter(e=>e.id!==id));
+  const totals=CATS.reduce((a,c)=>{a[c.key]=exps.filter(e=>e.cat===c.key).reduce((s,e)=>s+e.amt,0);return a},{});
+  const grandSpent=exps.reduce((s,e)=>s+e.amt,0);
+  const grandBudget=CATS.reduce((s,c)=>s+c.budget,0);
+  return(
+    <div>
+      <div style={{background:"#fff",borderRadius:12,padding:14,marginBottom:10,boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+        <div style={{fontWeight:700,fontSize:15,marginBottom:10}}>🏨 Confirmed Housing</div>
+        {HOUSING.map((h,i)=>(
+          <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:"1px solid #f5f5f5"}}>
+            <div><div style={{fontSize:13,fontWeight:600}}>{h.city}</div><div style={{fontSize:11,color:MUTED}}>{h.dates}</div></div>
+            <div style={{textAlign:"right",flexShrink:0,marginLeft:8}}>
+              <div style={{fontSize:13,fontWeight:700,color:h.total==="TBD"?"#E67E22":INK}}>{h.total==="TBD"?"TBD":`$${typeof h.total==="number"?h.total.toFixed(2):h.total}`}</div>
+              <div style={{fontSize:10,color:MUTED}}>{h.status}</div>
+            </div>
+          </div>
+        ))}
+        <div style={{display:"flex",justifyContent:"space-between",marginTop:10,paddingTop:8,borderTop:`2px solid ${INK}`,fontWeight:700,fontSize:14}}>
+          <div>Total Housing (group)</div><div>~$3,141</div>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",marginTop:3,fontSize:12,color:MUTED}}>
+          <div>Per person (~3 people)</div><div>~$1,047</div>
+        </div>
+      </div>
+      <div style={{background:"#FFF8F0",border:"1px solid #E67E22",borderRadius:12,padding:14,marginBottom:10}}>
+        <div style={{fontWeight:700,fontSize:15,marginBottom:10}}>💰 Per Person Estimate</div>
+        {[{l:"Plane ticket",v:"~$780",n:"bought"},{l:"Housing",v:"~$1,047",n:"booked"},{l:"JR Pass + local transit",v:"~$400"},{l:"Food",v:"~$650",n:"~$30/day"},{l:"Events",v:"~$700"},{l:"eSIM (Airalo)",v:"$74",n:"you have it"},{l:"Shopping",v:"variable"}].map((r,i)=>(
+          <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:"1px solid #f0e8dc",fontSize:13}}>
+            <div><span>{r.l}</span>{r.n&&<span style={{fontSize:11,color:MUTED,marginLeft:5}}>{r.n}</span>}</div>
+            <div style={{fontWeight:600,flexShrink:0,marginLeft:8}}>{r.v}</div>
+          </div>
+        ))}
+        <div style={{display:"flex",justifyContent:"space-between",marginTop:10,paddingTop:8,borderTop:"2px solid #E67E22",fontSize:15,fontWeight:700}}>
+          <div>Est. Total (excl. shopping)</div><div>~$3,651</div>
+        </div>
+        <div style={{fontSize:11,color:MUTED,marginTop:4}}>$1 = ¥156</div>
+      </div>
+      <div style={{background:"#fff",borderRadius:12,padding:14,marginBottom:10,boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+          <div style={{fontWeight:700,fontSize:15}}>📊 Expense Tracker</div>
+          <button onClick={()=>setAdd(!add)} style={{background:RED,color:"#fff",border:"none",borderRadius:20,padding:"6px 14px",fontSize:13,cursor:"pointer"}}>+ Add</button>
+        </div>
+        {add&&(
+          <div style={{background:"#f9f9f9",borderRadius:8,padding:12,marginBottom:14}}>
+            <div style={{marginBottom:8}}><div style={{fontSize:11,color:MUTED,marginBottom:4}}>Amount (USD)</div>
+              <input value={form.amt} onChange={e=>setForm({...form,amt:e.target.value})} placeholder="25" style={{width:"100%",padding:"8px 10px",border:"1px solid #ddd",borderRadius:6,fontSize:14,background:"#fff"}}/></div>
+            <div style={{marginBottom:8}}><div style={{fontSize:11,color:MUTED,marginBottom:4}}>Category</div>
+              <select value={form.cat} onChange={e=>setForm({...form,cat:e.target.value})} style={{width:"100%",padding:"8px 10px",border:"1px solid #ddd",borderRadius:6,fontSize:14,background:"#fff"}}>
+                {CATS.map(c=><option key={c.key} value={c.key}>{c.label}</option>)}</select></div>
+            <div style={{marginBottom:10}}><div style={{fontSize:11,color:MUTED,marginBottom:4}}>Note</div>
+              <input value={form.note} onChange={e=>setForm({...form,note:e.target.value})} placeholder="Ramen at Ichiran" style={{width:"100%",padding:"8px 10px",border:"1px solid #ddd",borderRadius:6,fontSize:14,background:"#fff"}}/></div>
+            <div style={{display:"flex",gap:8}}>
+              <button onClick={submit} style={{flex:1,background:RED,color:"#fff",border:"none",borderRadius:8,padding:10,fontSize:14,cursor:"pointer",fontFamily:"Georgia,serif"}}>Add</button>
+              <button onClick={()=>setAdd(false)} style={{flex:1,background:"#eee",color:INK,border:"none",borderRadius:8,padding:10,fontSize:14,cursor:"pointer",fontFamily:"Georgia,serif"}}>Cancel</button>
+            </div>
+          </div>
+        )}
+        {CATS.map(cat=>{const spent=totals[cat.key]||0;const pct=Math.min((spent/cat.budget)*100,100);const over=spent>cat.budget;return(
+          <div key={cat.key} style={{marginBottom:12}}>
+            <div style={{display:"flex",justifyContent:"space-between",fontSize:13,marginBottom:4}}>
+              <span style={{fontWeight:600}}>{cat.label}</span>
+              <span style={{color:over?RED:MUTED}}>${spent.toFixed(0)} / ${cat.budget}</span>
+            </div>
+            <div style={{background:"#f0f0f0",borderRadius:10,height:8,overflow:"hidden"}}>
+              <div style={{width:`${pct}%`,height:"100%",background:over?RED:cat.color,borderRadius:10,transition:"width 0.3s"}}/>
+            </div>
+          </div>
+        );})}
+        <div style={{display:"flex",justifyContent:"space-between",paddingTop:10,borderTop:`2px solid ${INK}`,fontSize:15,fontWeight:700}}>
+          <div>Total tracked</div><div style={{color:grandSpent>grandBudget?RED:INK}}>${grandSpent.toFixed(0)} / ${grandBudget}</div>
+        </div>
+      </div>
+      {exps.length>0&&(
+        <div style={{background:"#fff",borderRadius:12,padding:14,boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+          <div style={{fontWeight:700,fontSize:15,marginBottom:10}}>Recent Expenses</div>
+          {[...exps].reverse().map(e=>{const cat=CATS.find(c=>c.key===e.cat);return(
+            <div key={e.id} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:"1px solid #f5f5f5"}}>
+              <div style={{width:32,height:32,borderRadius:8,background:(cat?.color||"#888")+"20",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15}}>{cat?.label.split(" ")[0]}</div>
+              <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600}}>{e.note||cat?.label}</div><div style={{fontSize:11,color:MUTED}}>{e.d}</div></div>
+              <div style={{fontWeight:700,fontSize:14}}>${e.amt.toFixed(2)}</div>
+              <button onClick={()=>del(e.id)} style={{background:"none",border:"none",color:"#ccc",cursor:"pointer",fontSize:18,padding:"0 2px",lineHeight:1}}>×</button>
+            </div>
+          );})}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function App(){
+  const [tab,setTab]=useState("days");
+  const [open,setOpen]=useState(-1);
+  const toggle=useCallback(i=>setOpen(p=>p===i?-1:i),[]);
+  const TABS=[{k:"days",l:"📅 Days"},{k:"events",l:"🗾 Events"},{k:"budget",l:"💰 Budget"},{k:"book",l:"⚠️ Book"},{k:"shop",l:"🛍️ Shop"}];
+
+  return(
+    <div style={{background:CREAM,minHeight:"100vh",paddingBottom:50}}>
+      <div style={{background:INK,color:CREAM,padding:"0 1.25rem 0.75rem",paddingTop:"max(1.5rem,env(safe-area-inset-top))",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,right:0,width:150,height:150,borderRadius:"50%",background:RED,opacity:0.15,transform:"translate(50px,-50px)"}}/>
+        <div style={{fontSize:9,letterSpacing:4,color:MUTED,marginBottom:5,fontFamily:"monospace"}}>MAY 14 – JUNE 3 · 3 WEEKS</div>
+        <h1 style={{margin:0,fontSize:"1.7rem",fontWeight:700}}>Japan 🇯🇵</h1>
+        <p style={{margin:"3px 0 0",color:"#aaa",fontSize:11}}>Tokyo · Fuji · Kyoto · Osaka · Nara · Okinawa · Zamami</p>
+      </div>
+
+      <div style={{position:"sticky",top:0,zIndex:100,background:INK,padding:"0.5rem 0.75rem 0.6rem"}}>
+        <div className="tab-scroll">
+          {TABS.map(t=>(
+            <button key={t.k} onClick={()=>setTab(t.k)} className="ns" style={{flexShrink:0,padding:"7px 14px",borderRadius:20,border:"none",cursor:"pointer",fontFamily:"monospace",fontSize:10,letterSpacing:0.5,background:tab===t.k?RED:"rgba(255,255,255,0.1)",color:tab===t.k?"#fff":"#aaa",transition:"all 0.2s",whiteSpace:"nowrap"}}>
+              {t.l}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{padding:"0.65rem"}}>
+        {tab==="days"&&DAYS.map((day,i)=>(
+          <div key={i} style={{marginBottom:7}}>
+            <button onClick={()=>toggle(i)} className="ns" style={{width:"100%",background:open===i?INK:"#fff",color:open===i?CREAM:INK,border:"none",borderRadius:open===i?"12px 12px 0 0":12,padding:"11px 13px",cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left",boxShadow:"0 2px 8px rgba(0,0,0,.06)",transition:"all 0.2s"}}>
+              <span style={{fontSize:18}}>{day.emoji}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:9.5,fontFamily:"monospace",color:open===i?"#aaa":MUTED}}>{day.date}</div>
+                <div style={{fontWeight:700,fontSize:13,marginTop:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{day.loc}</div>
+              </div>
+              <span style={{fontSize:8.5,fontFamily:"monospace",letterSpacing:0.8,flexShrink:0,padding:"3px 7px",borderRadius:10,background:day.tagColor,color:"#fff",textTransform:"uppercase"}}>{day.tag}</span>
+              <span style={{fontSize:11,opacity:0.45,flexShrink:0}}>{open===i?"▲":"▼"}</span>
+            </button>
+            {open===i&&(
+              <div style={{background:"#fff",borderRadius:"0 0 12px 12px",padding:"13px 13px 16px",boxShadow:"0 4px 12px rgba(0,0,0,.07)"}}>
+                {day.stay&&<div style={{background:"#F0F7FF",borderRadius:8,padding:"7px 11px",marginBottom:11,fontSize:11.5,color:"#5B7FA6"}}>🏨 {day.stay}</div>}
+                {day.acts.map((a,j)=>(
+                  <div key={j} style={{display:"flex",gap:9,paddingBottom:9,borderBottom:j<day.acts.length-1?"1px solid #f2f2f2":"none",marginBottom:9}}>
+                    <span style={{fontSize:13,marginTop:1,minWidth:17}}>{TYPE_ICONS[a.t]||"•"}</span>
+                    <div><div style={{fontSize:13,fontWeight:600}}>{a.n}</div>{a.note&&<div style={{fontSize:11.5,color:"#666",marginTop:2,fontStyle:"italic"}}>{a.note}</div>}</div>
+                  </div>
+                ))}
+                {day.book?.length>0&&(
+                  <div style={{background:"#FFF3F3",border:`1px solid ${RED}30`,borderRadius:8,padding:"9px 11px",marginBottom:9}}>
+                    <div style={{fontSize:9.5,fontWeight:700,color:RED,letterSpacing:1,marginBottom:5,fontFamily:"monospace"}}>⚠️ BOOK IN ADVANCE</div>
+                    {day.book.map((b,k)=><div key={k} style={{fontSize:12.5,color:"#c00",marginBottom:2}}>• {b}</div>)}
+                  </div>
+                )}
+                {day.shop?.length>0&&(
+                  <div style={{background:"#F5F3FF",borderRadius:8,padding:"9px 11px",marginBottom:9}}>
+                    <div style={{fontSize:9.5,fontWeight:700,color:"#7B6FA3",letterSpacing:1,marginBottom:5,fontFamily:"monospace"}}>🛍️ BUY HERE</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                      {day.shop.map((s,k)=><span key={k} style={{background:"#EDE8FF",borderRadius:12,padding:"3px 9px",fontSize:11.5,color:"#5040A0"}}>{s}</span>)}
+                    </div>
+                  </div>
+                )}
+                {day.char&&(
+                  <div style={{background:"#FFF8F0",borderRadius:8,padding:"9px 11px",marginBottom:9}}>
+                    <div style={{fontSize:9.5,fontWeight:700,color:"#B56B30",letterSpacing:1,marginBottom:7,fontFamily:"monospace"}}>🎪 CHARACTER STREET</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                      {day.char.map((s,k)=><span key={k} style={{background:s.includes("⚠️")?"#FFE8E8":"#FFEFD9",borderRadius:12,padding:"3px 9px",fontSize:11.5,color:s.includes("⚠️")?RED:"#8B4513"}}>{s}</span>)}
+                    </div>
+                  </div>
+                )}
+                {day.tips?.length>0&&(
+                  <div style={{borderTop:"1px solid #f0f0f0",paddingTop:9}}>
+                    <div style={{fontSize:9.5,fontWeight:700,color:"#4A7C6B",letterSpacing:1,marginBottom:5,fontFamily:"monospace"}}>💡 PRO TIPS</div>
+                    {day.tips.map((t,k)=><div key={k} style={{fontSize:11.5,color:"#444",marginBottom:3}}>↗ {t}</div>)}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+
+        {tab==="events"&&<EventsTab/>}
+        {tab==="budget"&&<Budget/>}
+
+        {tab==="book"&&(
+          <div>
+            <div style={{background:"#F0FFF4",border:"1.5px solid #4A7C6B",borderRadius:12,padding:14,marginBottom:10}}>
+              <div style={{fontWeight:700,fontSize:14,color:"#4A7C6B",marginBottom:9}}>✅ Already Confirmed</div>
+              {CONFIRMED.map((b,i)=>(
+                <div key={i} style={{padding:"7px 0",borderBottom:i<CONFIRMED.length-1?"1px solid #cce8d4":"none"}}>
+                  <div style={{fontSize:13,fontWeight:600}}>{b.name}</div>
+                  <div style={{fontSize:11.5,color:"#555",marginTop:2}}>{b.note}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{background:"#FFF3F3",border:`1.5px solid ${RED}`,borderRadius:12,padding:"12px 14px",marginBottom:8}}>
+              <div style={{fontWeight:700,color:RED,fontSize:14}}>⚠️ Still Need to Book</div>
+            </div>
+            {TODO_BOOK.map((b,i)=>{
+              const col=b.urgency==="BOOK TODAY"?RED:b.urgency==="CONFIRM"?"#E67E22":b.urgency==="CHECK NOW"?"#D4A017":b.urgency==="BOOK AHEAD"?"#9B6B4A":"#aaa";
+              return(
+                <div key={i} style={{background:"#fff",borderRadius:12,padding:13,marginBottom:7,boxShadow:"0 2px 8px rgba(0,0,0,.06)",borderLeft:`4px solid ${col}`}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:7}}>
+                    <div style={{fontWeight:700,fontSize:13}}>{b.item}</div>
+                    <span style={{fontSize:8.5,fontFamily:"monospace",letterSpacing:0.8,flexShrink:0,padding:"3px 7px",borderRadius:10,background:col,color:b.urgency==="CHECK NOW"?INK:"#fff",textTransform:"uppercase"}}>{b.urgency}</span>
+                  </div>
+                  <div style={{fontSize:12,color:"#888",marginTop:3}}>{b.note}</div>
+                  <div style={{fontSize:11.5,color:"#5B7FA6",marginTop:5,fontFamily:"monospace"}}>→ {b.url}</div>
+                </div>
+              );
+            })}
+            <div style={{background:"#fff",borderRadius:12,padding:14,marginTop:8,boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+              <div style={{fontWeight:700,fontSize:15,marginBottom:10}}>📱 Apps</div>
+              <div style={{fontSize:10,color:MUTED,marginBottom:8,fontFamily:"monospace",letterSpacing:1}}>✅ YOU HAVE THESE</div>
+              {APPS.filter(a=>a.have).map((a,i)=>(
+                <div key={i} style={{display:"flex",gap:9,padding:"7px 0",borderBottom:"1px solid #f5f5f5"}}>
+                  <span style={{fontSize:17,flexShrink:0}}>{a.icon}</span>
+                  <div><div style={{fontSize:13,fontWeight:700,color:"#4A7C6B"}}>{a.name}</div><div style={{fontSize:11.5,color:"#666"}}>{a.note}</div></div>
+                </div>
+              ))}
+              <div style={{fontSize:10,color:MUTED,marginTop:12,marginBottom:8,fontFamily:"monospace",letterSpacing:1}}>📥 GET THESE TOO</div>
+              {APPS.filter(a=>!a.have).map((a,i)=>(
+                <div key={i} style={{display:"flex",gap:9,padding:"7px 0",borderBottom:"1px solid #f5f5f5"}}>
+                  <span style={{fontSize:17,flexShrink:0}}>{a.icon}</span>
+                  <div><div style={{fontSize:13,fontWeight:700}}>{a.name}</div><div style={{fontSize:11.5,color:"#666"}}>{a.note}</div></div>
+                </div>
+              ))}
+            </div>
+            <div style={{background:"#F0F7FF",borderRadius:12,padding:14,marginTop:10}}>
+              <div style={{fontWeight:700,fontSize:14,marginBottom:10}}>📋 Before You Leave</div>
+              {["Fill out Japan Visit Web (vjw.digital.go.jp)","Activate Airalo eSIM on the plane","Load Suica via Apple Wallet","Download Google Maps offline for Japan","Download Google Translate Japanese offline","Notify bank of travel dates","Get ¥30,000 cash (~$200) from bank","Reserve Shinkansen seats in smartEX app","Screenshot all hotel confirmation numbers","Check Klook — confirm all 3 events + Hozugawa","Book teamLab Biortex at teamlab.art","Book Kawaguchiko bus at highway-buses.jp","Pack ibuprofen","Bring portable power banks","Bring comfortable walking shoes (20k steps/day)"].map((item)=>(
+                <CheckItem key={item} text={item} prefix="preflight"/>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab==="shop"&&(
+          <div>
+            <div style={{background:"#FFF8F0",borderRadius:10,padding:"10px 13px",marginBottom:9,fontSize:12.5,color:"#8B4513"}}>
+              💡 Tap items to check off — stays checked even when you close the app
+            </div>
+            {SHOPPING_CATS.map((cat,i)=>(
+              <div key={i} style={{background:"#fff",borderRadius:12,padding:13,marginBottom:9,boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+                <div style={{fontWeight:700,fontSize:14,marginBottom:9}}>{cat.cat}</div>
+                {cat.items.map(item=><CheckItem key={item} text={item} prefix={`shop_${i}`}/>)}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+<script>
+if("serviceWorker"in navigator){
+  window.addEventListener("load",()=>{
+    const sw=`const C="jp-v4";self.addEventListener("install",e=>e.waitUntil(caches.open(C).then(c=>c.addAll(["/"]))));self.addEventListener("fetch",e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;
+    navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:"application/javascript"}))).catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
